@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Review report #{{ report.pk }} · BasuraOras{% endblock %}
+{% block content %}
+<div class="card narrow">
+  <h1>Report #{{ report.pk }} <span class="badge status-{{ report.status|lower }}">{{ report.get_status_display }}</span></h1>
+  <dl>
+    <dt>Resident</dt><dd>{{ report.user.display_name }}{% if report.user.phone_number %} · {{ report.user.phone_number }}{% endif %}</dd>
+    <dt>Street</dt><dd>{{ report.schedule.street }}</dd>
+    <dt>Scheduled</dt><dd>{{ report.schedule.get_day_of_week_display }}, {{ report.schedule.start_time|time:"h:i A" }}–{{ report.schedule.end_time|time:"h:i A" }}</dd>
+    <dt>Collection date</dt><dd>{{ report.collection_date|date:"F d, Y" }}</dd>
+    <dt>Description</dt><dd>{{ report.description|linebreaksbr }}</dd>
+    <dt>Filed</dt><dd>{{ report.reported_at|date:"M d, Y h:i A" }}</dd>
+    {% if report.staff_response %}<dt>Staff response</dt><dd>{{ report.staff_response|linebreaksbr }}</dd>{% endif %}
+    {% if report.handled_by %}<dt>Handled by</dt><dd>{{ report.handled_by.display_name }}</dd>{% endif %}
+  </dl>
+  {% if form %}
+    <hr>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% for field in form %}{% include "accounts/_field.html" %}{% endfor %}
+      <button type="submit" class="btn">Update report</button>
+    </form>
+  {% else %}
+    <p class="muted">This report is closed.</p>
+  {% endif %}
+  <p><a href="{% url 'pickups:staff_report_list' %}">Back to reports</a></p>
+</div>
+{% endblock %}

@@ -10,12 +10,44 @@
   </section>
   <section class="card">
     <h2>Next collection</h2>
-    <p class="muted">Schedule lookup arrives with the next feature.</p>
+    {% if upcoming %}
+      <p class="big">{{ upcoming.0|date:"l, M d" }}</p>
+      <p class="muted">{{ upcoming.1.start_time|time:"h:i A" }} – {{ upcoming.1.end_time|time:"h:i A" }}</p>
+    {% else %}
+      <p class="muted">No schedule has been posted for your street yet.</p>
+    {% endif %}
   </section>
   <section class="card">
     <h2>Advisories</h2>
     <p class="muted">No advisories yet.</p>
   </section>
 </div>
-<p><a class="btn" href="{% url 'accounts:profile' %}">View my profile</a></p>
+
+{% if schedules %}
+<section class="card">
+  <h2>Collection days for your street</h2>
+  <ul>
+    {% for s in schedules %}<li>{{ s.get_day_of_week_display }} · {{ s.start_time|time:"h:i A" }} – {{ s.end_time|time:"h:i A" }}</li>{% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+<section class="card">
+  <div class="head-row">
+    <h2>Recent reports</h2>
+    <a class="btn" href="{% url 'pickups:report_create' %}">Report a missed collection</a>
+  </div>
+  {% if recent_reports %}
+    <ul>
+      {% for r in recent_reports %}
+        <li><a href="{% url 'pickups:report_detail' r.pk %}">#{{ r.pk }}</a> · {{ r.collection_date|date:"M d" }}
+          <span class="badge status-{{ r.status|lower }}">{{ r.get_status_display }}</span></li>
+      {% endfor %}
+    </ul>
+    <a href="{% url 'pickups:report_list' %}">See all my reports</a>
+  {% else %}
+    <p class="muted">You haven't reported anything.</p>
+  {% endif %}
+</section>
+<p><a href="{% url 'accounts:profile' %}">View my profile</a></p>
 {% endblock %}
