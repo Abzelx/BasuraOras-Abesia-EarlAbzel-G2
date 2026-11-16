@@ -5,16 +5,20 @@
 <p class="muted">{{ user.position_title|default:"Barangay staff" }} · {{ user.barangay.name }}</p>
 <div class="grid">
   <section class="card">
+    <h2>New reports</h2>
+    <p class="big">{{ pending_count }}</p>
+    <p class="muted">{{ open_count }} open in total</p>
+    <a class="btn" href="{% url 'pickups:staff_report_list' %}">Review reports</a>
+  </section>
+  <section class="card">
+    <h2>Collection schedules</h2>
+    <p class="big">{{ schedule_count }}</p>
+    <p class="muted">active entries</p>
+    <a class="btn" href="{% url 'pickups:schedule_list' %}">Manage schedules</a>
+  </section>
+  <section class="card">
     <h2>Post an advisory</h2>
-    <p class="muted">Schedule change advisories arrive with the next feature.</p>
-  </section>
-  <section class="card">
-    <h2>Missed-collection reports</h2>
-    <p class="muted">Reports from residents will appear here.</p>
-  </section>
-  <section class="card">
-    <h2>Manage schedules</h2>
-    <p class="muted">Coming soon.</p>
+    <p class="muted">Schedule change advisories arrive with a later feature.</p>
   </section>
 </div>
 {% endblock %}

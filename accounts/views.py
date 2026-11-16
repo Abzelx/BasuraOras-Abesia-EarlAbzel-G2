@@ -5,6 +5,9 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.shortcuts import redirect, render
 
+from pickups import utils as pickup_utils
+from pickups.models import CollectionSchedule, MissedReport
+
 from .decorators import role_required
 from .forms import ProfileForm, RegistrationForm
 from .models import User
@@ -54,12 +57,24 @@ def dashboard_redirect(request):
 
 @role_required(User.Role.RESIDENT)
 def resident_dashboard(request):
-    return render(request, "accounts/resident_dashboard.html")
+    user = request.user
+    schedules = CollectionSchedule.objects.filter(street_id=user.street_id, is_active=True).select_related("street")
+    upcoming = pickup_utils.next_collection(schedules, pickup_utils.now_local().date())
+    recent_reports = MissedReport.objects.filter(user=user).select_related("schedule__street")[:3]
+    return render(request, "accounts/resident_dashboard.html", {
+        "schedules": schedules, "upcoming": upcoming, "recent_reports": recent_reports,
+    })
 
 
 @role_required(User.Role.STAFF)
 def staff_dashboard(request):
-    return render(request, "accounts/staff_dashboard.html")
+    reports = MissedReport.objects.filter(schedule__street__barangay=request.user.barangay)
+    return render(request, "accounts/staff_dashboard.html", {
+        "pending_count": reports.filter(status=MissedReport.Status.SUBMITTED).count(),
+        "open_count": reports.exclude(status__in=MissedReport.FINAL_STATUSES).count(),
+        "schedule_count": CollectionSchedule.objects.filter(
+            street__barangay=request.user.barangay, is_active=True).count(),
+    })
 
 
 @login_required

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Reports · BasuraOras{% endblock %}
+{% block content %}
+<h1>Missed-collection reports</h1>
+<p class="muted">{{ user.barangay.name }}</p>
+<form method="get" class="filter">
+  <label for="status">Status</label>
+  <select name="status" id="status" onchange="this.form.submit()">
+    <option value="">All</option>
+    {% for value, label in statuses %}<option value="{{ value }}" {% if value == status %}selected{% endif %}>{{ label }}</option>{% endfor %}
+  </select>
+</form>
+<div class="card">
+  {% if reports %}
+  <table>
+    <thead><tr><th>#</th><th>Resident</th><th>Street</th><th>Collection date</th><th>Status</th><th>Filed</th></tr></thead>
+    <tbody>
+    {% for r in reports %}
+      <tr>
+        <td><a href="{% url 'pickups:staff_report_review' r.pk %}">#{{ r.pk }}</a></td>
+        <td>{{ r.user.display_name }}</td>
+        <td>{{ r.schedule.street.name }}</td>
+        <td>{{ r.collection_date|date:"M d, Y" }}</td>
+        <td><span class="badge status-{{ r.status|lower }}">{{ r.get_status_display }}</span></td>
+        <td>{{ r.reported_at|date:"M d, h:i A" }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p class="muted">No reports{% if status %} with that status{% endif %}.</p>
+  {% endif %}
+</div>
+{% endblock %}
