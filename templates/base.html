@@ -14,8 +14,11 @@
       {% if user.is_authenticated %}
         {% if user.is_barangay_staff %}
           <a href="{% url 'accounts:staff_dashboard' %}">Staff Dashboard</a>
+          <a href="{% url 'pickups:staff_report_list' %}">Reports</a>
+          <a href="{% url 'pickups:schedule_list' %}">Schedules</a>
         {% elif user.is_resident %}
           <a href="{% url 'accounts:resident_dashboard' %}">My Dashboard</a>
+          <a href="{% url 'pickups:report_list' %}">My Reports</a>
         {% endif %}
         <a href="{% url 'accounts:profile' %}">Profile</a>
         <form method="post" action="{% url 'accounts:logout' %}" class="inline">
