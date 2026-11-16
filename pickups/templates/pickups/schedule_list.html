@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Collection Schedules · BasuraOras{% endblock %}
+{% block content %}
+<div class="head-row">
+  <h1>Collection schedules</h1>
+  <a class="btn" href="{% url 'pickups:schedule_create' %}">+ Add schedule</a>
+</div>
+<p class="muted">{{ user.barangay.name }} · you can manage streets in your own barangay only.</p>
+<div class="card">
+  {% if schedules %}
+  <table>
+    <thead><tr><th>Street / purok</th><th>Day</th><th>Time</th><th>Status</th><th></th></tr></thead>
+    <tbody>
+    {% for s in schedules %}
+      <tr>
+        <td>{{ s.street.name }}{% if s.street.purok %} <span class="muted">· {{ s.street.purok }}</span>{% endif %}</td>
+        <td>{{ s.get_day_of_week_display }}</td>
+        <td>{{ s.start_time|time:"h:i A" }} – {{ s.end_time|time:"h:i A" }}</td>
+        <td>{% if s.is_active %}<span class="badge status-resolved">Active</span>{% else %}<span class="badge status-dismissed">Inactive</span>{% endif %}</td>
+        <td class="actions">
+          <a href="{% url 'pickups:schedule_edit' s.pk %}">Edit</a>
+          <form method="post" action="{% url 'pickups:schedule_delete' s.pk %}" class="inline"
+                onsubmit="return confirm('Delete this schedule entry?');">
+            {% csrf_token %}<button type="submit" class="link danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p class="muted">No schedules yet. Add the first one.</p>
+  {% endif %}
+</div>
+{% endblock %}

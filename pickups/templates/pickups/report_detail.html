@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Report #{{ report.pk }} · BasuraOras{% endblock %}
+{% block content %}
+<div class="card narrow">
+  <h1>Report #{{ report.pk }} <span class="badge status-{{ report.status|lower }}">{{ report.get_status_display }}</span></h1>
+  <dl>
+    <dt>Street</dt><dd>{{ report.schedule.street }}</dd>
+    <dt>Scheduled</dt><dd>{{ report.schedule.get_day_of_week_display }}, {{ report.schedule.start_time|time:"h:i A" }}–{{ report.schedule.end_time|time:"h:i A" }}</dd>
+    <dt>Collection date</dt><dd>{{ report.collection_date|date:"F d, Y" }}</dd>
+    <dt>Your description</dt><dd>{{ report.description|linebreaksbr }}</dd>
+    <dt>Filed</dt><dd>{{ report.reported_at|date:"M d, Y h:i A" }}</dd>
+    {% if report.staff_response %}<dt>Staff response</dt><dd>{{ report.staff_response|linebreaksbr }}</dd>{% endif %}
+    {% if report.handled_by %}<dt>Handled by</dt><dd>{{ report.handled_by.display_name }}</dd>{% endif %}
+  </dl>
+  {% if report.can_resident_edit %}<a class="btn" href="{% url 'pickups:report_edit' report.pk %}">Edit description</a>{% endif %}
+  <a href="{% url 'pickups:report_list' %}">Back to my reports</a>
+</div>
+{% endblock %}
