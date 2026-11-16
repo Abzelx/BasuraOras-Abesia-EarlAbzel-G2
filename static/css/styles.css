@@ -25,3 +25,22 @@ form.inline { display:inline; }
 .msg.error { background:#fde7e7; color:#7a1410; }
 dl { display:grid; grid-template-columns:max-content 1fr; gap:.4rem 1rem; }
 dt { font-weight:600; } dd { margin:0; }
+
+/* ---- PD2: schedules and reports ---- */
+.head-row { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.5rem; }
+table { width:100%; border-collapse:collapse; }
+th, td { text-align:left; padding:.55rem .5rem; border-bottom:1px solid #e6ebe6; }
+th { font-size:.85rem; color:var(--muted); }
+.actions { white-space:nowrap; }
+.actions a, button.link { color:var(--green-dark); background:none; border:0; font:inherit; cursor:pointer; padding:0; margin-left:.75rem; text-decoration:underline; }
+button.link.danger { color:var(--red); }
+.badge { display:inline-block; padding:.1rem .55rem; border-radius:999px; font-size:.78rem; font-weight:600; }
+.status-submitted { background:#e8f0fe; color:#1a3d8f; }
+.status-acknowledged { background:#fff4d6; color:#7a5200; }
+.status-resolved { background:#e3f4e5; color:#14532d; }
+.status-dismissed { background:#eee; color:#555; }
+.filter { margin:.75rem 0; } .filter select { padding:.35rem; border-radius:8px; margin-left:.4rem; }
+.msg.warning { background:#fff4d6; color:#7a5200; }
+.big { font-size:1.6rem; font-weight:700; margin:.2rem 0; }
+.field textarea { width:100%; padding:.55rem .65rem; border:1px solid #bbb; border-radius:8px; font:inherit; }
+hr { border:0; border-top:1px solid #e6ebe6; margin:1rem 0; }

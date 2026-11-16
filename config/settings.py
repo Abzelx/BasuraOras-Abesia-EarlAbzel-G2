@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # Our apps
     "locations",
     "accounts",
+    "pickups",
 ]
 
 MIDDLEWARE = [
