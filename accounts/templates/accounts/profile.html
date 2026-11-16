@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}My Profile · BasuraOras{% endblock %}
+{% block content %}
+<div class="card narrow">
+  <h1>My profile</h1>
+  <dl>
+    <dt>Username</dt><dd>{{ profile_user.username }}</dd>
+    <dt>Name</dt><dd>{{ profile_user.get_full_name|default:"—" }}</dd>
+    <dt>Email</dt><dd>{{ profile_user.email|default:"—" }}</dd>
+    <dt>Contact number</dt><dd>{{ profile_user.phone_number|default:"—" }}</dd>
+    <dt>Role</dt><dd>{{ profile_user.get_role_display }}</dd>
+    {% if profile_user.is_resident %}
+      <dt>Street / purok</dt><dd>{{ profile_user.street|default:"—" }}</dd>
+      <dt>House details</dt><dd>{{ profile_user.house_details|default:"—" }}</dd>
+    {% else %}
+      <dt>Barangay</dt><dd>{{ profile_user.barangay|default:"—" }}</dd>
+      <dt>Position</dt><dd>{{ profile_user.position_title|default:"—" }}</dd>
+    {% endif %}
+  </dl>
+  <a class="btn" href="{% url 'accounts:profile_edit' %}">Edit profile</a>
+</div>
+{% endblock %}

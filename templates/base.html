@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}BasuraOras{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="{% url 'accounts:dashboard' %}">BasuraOras</a>
+    <nav>
+      {% if user.is_authenticated %}
+        {% if user.is_barangay_staff %}
+          <a href="{% url 'accounts:staff_dashboard' %}">Staff Dashboard</a>
+        {% elif user.is_resident %}
+          <a href="{% url 'accounts:resident_dashboard' %}">My Dashboard</a>
+        {% endif %}
+        <a href="{% url 'accounts:profile' %}">Profile</a>
+        <form method="post" action="{% url 'accounts:logout' %}" class="inline">
+          {% csrf_token %}
+          <button type="submit" class="link">Log out ({{ user.username }})</button>
+        </form>
+      {% else %}
+        <a href="{% url 'accounts:login' %}">Log in</a>
+        <a href="{% url 'accounts:register' %}">Register</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <main class="container">
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li class="msg {{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

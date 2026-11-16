@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Staff Dashboard · BasuraOras{% endblock %}
+{% block content %}
+<h1>Staff dashboard</h1>
+<p class="muted">{{ user.position_title|default:"Barangay staff" }} · {{ user.barangay.name }}</p>
+<div class="grid">
+  <section class="card">
+    <h2>Post an advisory</h2>
+    <p class="muted">Schedule change advisories arrive with the next feature.</p>
+  </section>
+  <section class="card">
+    <h2>Missed-collection reports</h2>
+    <p class="muted">Reports from residents will appear here.</p>
+  </section>
+  <section class="card">
+    <h2>Manage schedules</h2>
+    <p class="muted">Coming soon.</p>
+  </section>
+</div>
+{% endblock %}

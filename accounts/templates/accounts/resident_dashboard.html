@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Resident Dashboard · BasuraOras{% endblock %}
+{% block content %}
+<h1>Hello, {{ user.display_name }}</h1>
+<div class="grid">
+  <section class="card">
+    <h2>Your area</h2>
+    <p><strong>{{ user.street.name }}</strong>{% if user.street.purok %} · {{ user.street.purok }}{% endif %}</p>
+    <p class="muted">{{ user.street.barangay.name }}</p>
+  </section>
+  <section class="card">
+    <h2>Next collection</h2>
+    <p class="muted">Schedule lookup arrives with the next feature.</p>
+  </section>
+  <section class="card">
+    <h2>Advisories</h2>
+    <p class="muted">No advisories yet.</p>
+  </section>
+</div>
+<p><a class="btn" href="{% url 'accounts:profile' %}">View my profile</a></p>
+{% endblock %}
