@@ -1,0 +1,22 @@
+# Secrets - never commit these
+.env
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Django
+db.sqlite3
+staticfiles/
+media/
+*.log
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
